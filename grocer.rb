@@ -1,16 +1,14 @@
 def consolidate_cart(cart)
-  consolidated_cart = {}
-	  cart.map do |hash|
-      hash.map do |item, price_hash|
-        if consolidated_cart.has_key?(item) == false
-          consolidated_cart[item] = price_hash
-          consolidated_cart[item][:count] = 1 
-        else
-          consolidated_cart[item][:count] += 1 
-        end
+  cart.each_with_object({}) do |item, result|
+    item.each do |type, attributes|
+      if result[type]
+        attributes[:count] += 1
+      else
+        attributes[:count] = 1
+        result[type] = attributes
       end
     end
-  consolidated_cart
+  end
 end
 
 def apply_coupons(cart, coupons)
